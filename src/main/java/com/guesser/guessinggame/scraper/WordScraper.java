@@ -1,5 +1,6 @@
 package com.guesser.guessinggame.scraper;
 
+import com.guesser.guessinggame.model.word.Word;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -9,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
+
 import org.json.JSONArray;
 
 public class WordScraper implements WebScraper {
@@ -62,5 +65,23 @@ public class WordScraper implements WebScraper {
         Document html = Jsoup.connect(url).get();
         String word = html.select("div#random_word").text();
         return word;
+    }
+
+    public Word scrapeRandomWordAndDefinitions() throws IOException {
+        Word ret = null;
+        String url = "https://randomword.com/";
+        try {
+            ret = getWordAndDefinitionsFromHtml(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    private Word getWordAndDefinitionsFromHtml(String url) throws IOException {
+        Document html = Jsoup.connect(url).get();
+        String word = html.select("div#random_word").text();
+        String definition = html.select("div#random_word_definition").text();
+        return new Word(word, List.of(definition));
     }
 }

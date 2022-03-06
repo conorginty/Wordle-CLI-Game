@@ -17,6 +17,11 @@ public class Word {
         this.word = word;
     }
 
+    public Word(String word, List<String> definitions) {
+        this.word = word;
+        this.definitions= definitions;
+    }
+
     public Word(String word, PartOfSpeech partOfSpeech, List<String> definitions, List<String> synonyms,
                 List<String> antonyms, Language language, Difficulty difficulty, String hint, String example) {
         this.word = word;
@@ -110,6 +115,7 @@ public class Word {
     public String toString() {
         return "Word{" +
             "word='" + word + '\'' +
+            ", definitions=" + definitions +
             '}';
     }
 }
