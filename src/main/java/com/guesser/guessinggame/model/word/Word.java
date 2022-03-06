@@ -13,6 +13,10 @@ public class Word {
     private String hint;
     private String example;
 
+    public Word(String word) {
+        this.word = word;
+    }
+
     public Word(String word, PartOfSpeech partOfSpeech, List<String> definitions, List<String> synonyms,
                 List<String> antonyms, Language language, Difficulty difficulty, String hint, String example) {
         this.word = word;
