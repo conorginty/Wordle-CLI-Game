@@ -105,4 +105,11 @@ public class Word {
     public void setExample(String example) {
         this.example = example;
     }
+
+    @Override
+    public String toString() {
+        return "Word{" +
+            "word='" + word + '\'' +
+            '}';
+    }
 }
