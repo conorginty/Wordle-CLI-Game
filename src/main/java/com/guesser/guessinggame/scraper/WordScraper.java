@@ -13,12 +13,13 @@ import org.json.JSONArray;
 
 public class WordScraper implements WebScraper {
 
-    public String scrapeRandomWord() {
-        String ret = null;
+    public String scrapeRandomWord() throws IOException {
+        String ret;
         try {
             ret = getWordFromJson("https://random-word-api.herokuapp.com/word?number=1&swear=0");
         } catch (Exception e) {
             e.printStackTrace();
+            ret = getWordFromHtml("https://randomword.com/");
         }
         return ret;
     }
@@ -55,5 +56,11 @@ public class WordScraper implements WebScraper {
         }
         JSONArray jsonArray = new JSONArray(jsonText);
         return jsonArray.getString(0);
+    }
+
+    private String getWordFromHtml(String url) throws IOException {
+        Document html = Jsoup.connect(url).get();
+        String word = html.select("div#random_word").text();
+        return word;
     }
 }
