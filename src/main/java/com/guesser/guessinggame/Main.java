@@ -17,6 +17,9 @@ public class Main {
 
             Word randomWordAndDefinition = wordGetter.getRandomWordAndDefinition();
             System.out.println(randomWordAndDefinition);
+
+            Word fullWord = wordGetter.getFullRandomWord();
+            System.out.println(fullWord);
         } catch (IOException e) {
             e.printStackTrace();
         }

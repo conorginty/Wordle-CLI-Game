@@ -1,6 +1,7 @@
 package com.guesser.guessinggame.scraper;
 
 import com.guesser.guessinggame.model.word.Word;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -82,6 +83,43 @@ public class WordScraper implements WebScraper {
         Document html = Jsoup.connect(url).get();
         String word = html.select("div#random_word").text();
         String definition = html.select("div#random_word_definition").text();
+        return new Word(word, List.of(definition));
+    }
+
+    public Word scrapeFullWord() throws IOException {
+        Word ret = null;
+        String url = newDictionaryApiUrlWithRandomWord();
+
+        boolean unsuccessful = true;
+        while (unsuccessful) {
+            try {
+                ret = getFullWordFromJson(url);
+                unsuccessful = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Word does not exist in the Dictionary API. Trying again with a new random word...");
+                url = newDictionaryApiUrlWithRandomWord();
+            }
+        }
+        return ret;
+    }
+
+    private String newDictionaryApiUrlWithRandomWord() throws IOException {
+        String randomWord = getWordFromHtml("https://randomword.com/");
+        return "https://api.dictionaryapi.dev/api/v2/entries/en/" + randomWord;
+    }
+
+    private Word getFullWordFromJson(String url) {
+        String json = parseJsonFromUrl(url);
+        JSONArray jsonArray = new JSONArray(json);
+        JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+
+        String word = jsonObject.getString("word");
+        JSONObject meanings = (JSONObject) jsonObject.getJSONArray("meanings").get(0);
+        System.out.println("The word is: " + word);
+        JSONArray definitions = meanings.getJSONArray("definitions");
+        String definition = ((JSONObject) definitions.get(0)).getString("definition");
+        System.out.println("The definition is: " + definition);
         return new Word(word, List.of(definition));
     }
 }

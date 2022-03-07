@@ -21,4 +21,9 @@ public class WordGetter {
         Word word = this.wordScraper.scrapeRandomWordAndDefinitions();
         return word;
     }
+
+    public Word getFullRandomWord() throws IOException {
+        Word word = this.wordScraper.scrapeFullWord();
+        return word;
+    }
 }
