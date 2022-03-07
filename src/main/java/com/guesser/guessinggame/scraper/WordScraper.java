@@ -10,12 +10,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.json.JSONArray;
 
-public class WordScraper implements WebScraper {
+public class WordScraper implements WebScraper<String> {
+
+    public static final String HTTPS_RANDOMWORD_COM = "https://randomword.com/";
 
     public String scrapeRandomWord() throws IOException {
         String ret;
@@ -23,21 +25,21 @@ public class WordScraper implements WebScraper {
             ret = getWordFromJson("https://random-word-api.herokuapp.com/word?number=1&swear=0");
         } catch (Exception e) {
             e.printStackTrace();
-            ret = getWordFromHtml("https://randomword.com/");
+            System.out.println("Trying to get word from another API instead...");
+            ret = getWordFromHtml(HTTPS_RANDOMWORD_COM);
         }
         return ret;
     }
 
     private String getWordFromJson(String url) {
         String jsonText = parseJsonFromUrl(url);
-        String word = getWordFromJsonArray(jsonText);
-        return word;
+        return getWordFromJsonArray(jsonText);
     }
 
     private String parseJsonFromUrl(String url) {
         String jsonText = null;
         try (InputStream is = new URL(url).openStream();) {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             jsonText = readAll(bufferedReader);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,17 +66,17 @@ public class WordScraper implements WebScraper {
 
     private String getWordFromHtml(String url) throws IOException {
         Document html = Jsoup.connect(url).get();
-        String word = html.select("div#random_word").text();
-        return word;
+        return html.select("div#random_word").text();
     }
 
-    public Word scrapeRandomWordAndDefinitions() throws IOException {
+    public Word scrapeRandomWordAndDefinitions() {
         Word ret = null;
-        String url = "https://randomword.com/";
+        String url = HTTPS_RANDOMWORD_COM;
         try {
             ret = getWordAndDefinitionsFromHtml(url);
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Unable to scrape word and definition from API...");
         }
         return ret;
     }
@@ -105,7 +107,7 @@ public class WordScraper implements WebScraper {
     }
 
     private String newDictionaryApiUrlWithRandomWord() throws IOException {
-        String randomWord = getWordFromHtml("https://randomword.com/");
+        String randomWord = getWordFromHtml(HTTPS_RANDOMWORD_COM);
         return "https://api.dictionaryapi.dev/api/v2/entries/en/" + randomWord;
     }
 

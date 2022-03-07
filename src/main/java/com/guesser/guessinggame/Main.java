@@ -12,12 +12,15 @@ public class Main {
         WordGetter wordGetter = new WordGetter(wordScraper);
 
         try {
+            System.out.println("=== Get Random Word ===");
             Word randomWord = wordGetter.getRandomWord();
             System.out.println(randomWord);
 
+            System.out.println("=== Get Random Word and Definition ===");
             Word randomWordAndDefinition = wordGetter.getRandomWordAndDefinition();
             System.out.println(randomWordAndDefinition);
 
+            System.out.println("=== Get 'Full' Random Word ===");
             Word fullWord = wordGetter.getFullRandomWord();
             System.out.println(fullWord);
         } catch (IOException e) {
