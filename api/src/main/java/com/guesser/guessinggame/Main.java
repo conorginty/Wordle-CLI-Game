@@ -1,6 +1,7 @@
 package com.guesser.guessinggame;
 
 import com.guesser.guessinggame.model.word.Word;
+import com.guesser.guessinggame.scraper.LocalWordGetter;
 import com.guesser.guessinggame.scraper.WordGetter;
 import com.guesser.guessinggame.scraper.WordScraper;
 
@@ -23,6 +24,16 @@ public class Main {
             System.out.println("=== Get 'Full' Random Word ===");
             Word fullWord = wordGetter.getFullRandomWord();
             System.out.println(fullWord);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        LocalWordGetter localWordGetter = new LocalWordGetter();
+
+        try {
+            System.out.println("=== Get Random Local Word ===");
+            Word randomWord = localWordGetter.getRandomWord();
+            System.out.println(randomWord);
         } catch (IOException e) {
             e.printStackTrace();
         }
