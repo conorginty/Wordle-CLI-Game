@@ -1,17 +1,19 @@
-package com.guesser.guessinggame.scraper;
+package com.guesser.guessinggame.getter;
 
 import com.guesser.guessinggame.model.word.Word;
+import com.guesser.guessinggame.scraper.WordScraper;
 
 import java.io.IOException;
 
-public class WordGetter {
+public class RemoteWordGetter implements WordGetter {
 
     private WordScraper wordScraper;
 
-    public WordGetter(WordScraper wordScraper) {
+    public RemoteWordGetter(WordScraper wordScraper) {
         this.wordScraper = wordScraper;
     }
 
+    @Override
     public Word getRandomWord() throws IOException {
         String word = this.wordScraper.scrapeRandomWord();
         return new Word(word);
