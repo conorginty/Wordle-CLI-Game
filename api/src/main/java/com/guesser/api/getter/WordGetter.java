@@ -1,6 +1,6 @@
-package com.guesser.guessinggame.getter;
+package com.guesser.api.getter;
 
-import com.guesser.guessinggame.model.word.Word;
+import com.guesser.api.model.word.Word;
 
 import java.io.IOException;
 

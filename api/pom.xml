@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.guesser</groupId>
-	<artifactId>guessing-game</artifactId>
+	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>guessing-game</name>
 	<description>Spring-powered Word Guessing Game</description>

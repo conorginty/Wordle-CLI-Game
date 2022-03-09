@@ -1,4 +1,4 @@
-package com.guesser.guessinggame.scraper;
+package com.guesser.api.scraper;
 
 import java.io.IOException;
 

@@ -1,9 +1,9 @@
-package com.guesser.guessinggame;
+package com.guesser.api;
 
-import com.guesser.guessinggame.model.word.Word;
-import com.guesser.guessinggame.getter.LocalWordGetter;
-import com.guesser.guessinggame.getter.RemoteWordGetter;
-import com.guesser.guessinggame.scraper.WordScraper;
+import com.guesser.api.model.word.Word;
+import com.guesser.api.getter.LocalWordGetter;
+import com.guesser.api.getter.RemoteWordGetter;
+import com.guesser.api.scraper.WordScraper;
 
 import java.io.IOException;
 

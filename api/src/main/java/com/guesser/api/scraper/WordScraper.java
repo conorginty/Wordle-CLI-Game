@@ -1,6 +1,6 @@
-package com.guesser.guessinggame.scraper;
+package com.guesser.api.scraper;
 
-import com.guesser.guessinggame.model.word.Word;
+import com.guesser.api.model.word.Word;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

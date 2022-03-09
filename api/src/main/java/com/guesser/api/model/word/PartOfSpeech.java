@@ -1,4 +1,4 @@
-package com.guesser.guessinggame.model.word;
+package com.guesser.api.model.word;
 
 public enum PartOfSpeech {
     NOUN,

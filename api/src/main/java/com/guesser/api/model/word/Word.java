@@ -1,4 +1,4 @@
-package com.guesser.guessinggame.model.word;
+package com.guesser.api.model.word;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class Word {
 
     public Word(String word, List<String> definitions) {
         this.word = word;
-        this.definitions= definitions;
+        this.definitions = definitions;
     }
 
     public Word(String word, PartOfSpeech partOfSpeech, List<String> definitions, List<String> synonyms,

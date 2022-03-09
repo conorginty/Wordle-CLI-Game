@@ -1,7 +1,8 @@
-package com.guesser.guessinggame.getter;
+package com.guesser.api.getter;
 
-import com.guesser.guessinggame.model.word.Word;
-import com.guesser.guessinggame.utils.InputStreamUtils;
+import com.guesser.api.model.word.Word;
+import com.guesser.api.utils.InputStreamUtils;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
