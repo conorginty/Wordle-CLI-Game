@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@Service
 public class LocalWordGetter implements WordGetter {
 
     @Override
