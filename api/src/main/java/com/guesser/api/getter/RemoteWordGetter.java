@@ -19,6 +19,11 @@ public class RemoteWordGetter implements WordGetter {
         return new Word(word);
     }
 
+    @Override
+    public Word getRandomWordOfLengthN(int length) {
+        return null;
+    }
+
     public Word getRandomWordAndDefinition() throws IOException {
         Word word = this.wordScraper.scrapeRandomWordAndDefinitions();
         return word;

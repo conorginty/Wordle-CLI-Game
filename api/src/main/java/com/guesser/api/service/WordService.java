@@ -18,4 +18,8 @@ public class WordService {
     public Word getRandomWord() throws IOException {
         return wordGetter.getRandomWord();
     }
+
+    public Word getRandomWordOfLengthN(int length) {
+        return wordGetter.getRandomWordOfLengthN(length);
+    }
 }

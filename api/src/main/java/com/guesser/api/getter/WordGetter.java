@@ -6,4 +6,6 @@ import java.io.IOException;
 
 public interface WordGetter {
     Word getRandomWord() throws IOException;
+
+    Word getRandomWordOfLengthN(int length);
 }

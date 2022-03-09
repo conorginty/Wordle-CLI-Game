@@ -16,13 +16,26 @@ import java.util.stream.Collectors;
 @Service
 public class LocalWordGetter implements WordGetter {
 
+    private static final String fileName = "all_english_words.txt";
+    private final List<String> allWords = getAllWords(fileName);
+
     @Override
     public Word getRandomWord() throws IOException {
-        String fileName = "all_english_words.txt";
-        List<String> allWords = getAllWords(fileName);
-
         String randomWord = getARandomWord(allWords);
         return new Word(randomWord);
+    }
+
+    @Override
+    public Word getRandomWordOfLengthN(int length) {
+        List<String> allWordsOfLengthN = getAllWordsOfLengthN(allWords, length);
+        String randomWord = getARandomWord(allWordsOfLengthN);
+        return new Word(randomWord);
+    }
+
+    private List<String> getAllWordsOfLengthN(List<String> allWords, int length) {
+        return allWords.stream()
+            .filter(word -> word.length() == length)
+            .collect(Collectors.toList());
     }
 
     private List<String> getAllWords(String fileName) {
@@ -37,9 +50,13 @@ public class LocalWordGetter implements WordGetter {
         return InputStreamUtils.getFileFromResourceAsStream(fileName);
     }
 
-    private String getARandomWord(List<String> allWords) {
-        int numberOfWords = allWords.size();
-        int randomIndexOfWord = new Random().nextInt(numberOfWords);
-        return allWords.get(randomIndexOfWord);
+    private String getARandomWord(List<String> words) {
+        int numberOfWords = words.size();
+        try {
+            int randomIndexOfWord = new Random().nextInt(numberOfWords);
+            return words.get(randomIndexOfWord);
+        } catch (Exception e) {
+            return "ERROR_IN_GETTING_WORD";
+        }
     }
 }
