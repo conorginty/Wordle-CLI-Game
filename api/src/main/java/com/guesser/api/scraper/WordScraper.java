@@ -1,16 +1,17 @@
 package com.guesser.api.scraper;
 
+import com.guesser.api.getter.LocalWordGetter;
+import com.guesser.api.getter.WordGetter;
+import com.guesser.api.model.word.PartOfSpeech;
 import com.guesser.api.model.word.Word;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -99,7 +100,7 @@ public class WordScraper implements WebScraper<String> {
                 unsuccessful = false;
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Word does not exist in the Dictionary API. Trying again with a new random word...");
+                System.out.println("Word or some attribute of the word does not exist in the Dictionary API. Trying again with a new random word...");
                 url = newDictionaryApiUrlWithRandomWord();
             }
         }
@@ -107,21 +108,65 @@ public class WordScraper implements WebScraper<String> {
     }
 
     private String newDictionaryApiUrlWithRandomWord() throws IOException {
-        String randomWord = getWordFromHtml(HTTPS_RANDOMWORD_COM);
+        WordGetter localWordGetter = new LocalWordGetter();
+        String randomWord = localWordGetter.getRandomWord().getWord();
         return "https://api.dictionaryapi.dev/api/v2/entries/en/" + randomWord;
     }
 
     private Word getFullWordFromJson(String url) {
         String json = parseJsonFromUrl(url);
-        JSONArray jsonArray = new JSONArray(json);
+
+        JSONArray jsonArray;
+        try {
+            jsonArray = new JSONArray(json);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("JSON text is null");
+        }
+
         JSONObject jsonObject = (JSONObject) jsonArray.get(0);
 
         String word = jsonObject.getString("word");
-        JSONObject meanings = (JSONObject) jsonObject.getJSONArray("meanings").get(0);
         System.out.println("The word is: " + word);
+        JSONObject meanings = (JSONObject) jsonObject.getJSONArray("meanings").get(0);
+
+        String partOfSpeechString = meanings.getString("partOfSpeech");
+        PartOfSpeech partOfSpeech;
+        try {
+            partOfSpeech = PartOfSpeech.valueOf(partOfSpeechString.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            partOfSpeech = PartOfSpeech.UNKNOWN;
+        }
+        System.out.println("The partOfSpeech is: " + partOfSpeech);
+
+        JSONArray synonymsJsonArray = meanings.getJSONArray("synonyms");
+        List<String> synonyms = convertJsonArrayOfStringsToArrayList(synonymsJsonArray);
+        System.out.println("The synonyms are: " + synonyms);
+
+        JSONArray antonymsJsonArray = meanings.getJSONArray("antonyms");
+        List<String> antonyms = convertJsonArrayOfStringsToArrayList(antonymsJsonArray);
+        System.out.println("The antonyms are: " + antonyms);
+
         JSONArray definitions = meanings.getJSONArray("definitions");
         String definition = ((JSONObject) definitions.get(0)).getString("definition");
         System.out.println("The definition is: " + definition);
-        return new Word(word, List.of(definition));
+
+        String example;
+        try {
+            example = ((JSONObject) definitions.get(0)).getString("example");
+            System.out.println("An example is: " + example);
+        } catch (Exception e) {
+            System.out.println("No example available for: " + word);
+            example = "No example exists for word";
+        }
+        return new Word(word, partOfSpeech, List.of(definition), synonyms, antonyms, example);
+    }
+
+    private List<String> convertJsonArrayOfStringsToArrayList(JSONArray jsonArray) {
+        List<String> list = new ArrayList<>();
+        for (Object word: jsonArray) {
+            list.add(word.toString());
+        }
+        return list;
     }
 }

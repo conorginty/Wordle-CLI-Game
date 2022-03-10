@@ -32,6 +32,11 @@ public class LocalWordGetter implements WordGetter {
         return new Word(randomWord);
     }
 
+    @Override
+    public Word getRandomFullWord() {
+        return null;
+    }
+
     private List<String> getAllWordsOfLengthN(List<String> allWords, int length) {
         return allWords.stream()
             .filter(word -> word.length() == length)

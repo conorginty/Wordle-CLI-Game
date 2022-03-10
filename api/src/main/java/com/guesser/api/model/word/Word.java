@@ -22,6 +22,15 @@ public class Word {
         this.definitions = definitions;
     }
 
+    public Word(String word, PartOfSpeech partOfSpeech, List<String> definitions, List<String> synonyms, List<String> antonyms, String example) {
+        this.word = word;
+        this.partOfSpeech = partOfSpeech;
+        this.definitions = definitions;
+        this.synonyms = synonyms;
+        this.antonyms = antonyms;
+        this.example = example;
+    }
+
     public Word(String word, PartOfSpeech partOfSpeech, List<String> definitions, List<String> synonyms,
                 List<String> antonyms, Language language, Difficulty difficulty, String hint, String example) {
         this.word = word;
@@ -107,6 +116,13 @@ public class Word {
         return example;
     }
 
+    public String getExampleWithWordHidden() {
+        String hiddenWord = new String(new char[this.word.length()]).replace("\0", "-");
+        String hiddenExample = this.example.replaceAll("(?i)"+this.word, hiddenWord);
+        System.out.println("Hidden Example: " + hiddenExample);
+        return hiddenExample;
+    }
+
     public void setExample(String example) {
         this.example = example;
     }
@@ -115,7 +131,11 @@ public class Word {
     public String toString() {
         return "Word{" +
             "word='" + word + '\'' +
+            ", partOfSpeech=" + partOfSpeech +
             ", definitions=" + definitions +
+            ", synonyms=" + synonyms +
+            ", antonyms=" + antonyms +
+            ", example='" + example + '\'' +
             '}';
     }
 }

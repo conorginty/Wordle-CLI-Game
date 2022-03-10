@@ -8,4 +8,6 @@ public interface WordGetter {
     Word getRandomWord() throws IOException;
 
     Word getRandomWordOfLengthN(int length);
+
+    Word getRandomFullWord() throws IOException;
 }

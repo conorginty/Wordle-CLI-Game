@@ -22,4 +22,8 @@ public class WordService {
     public Word getRandomWordOfLengthN(int length) {
         return wordGetter.getRandomWordOfLengthN(length);
     }
+
+    public Word getRandomFullWord() throws IOException {
+        return wordGetter.getRandomFullWord();
+    }
 }

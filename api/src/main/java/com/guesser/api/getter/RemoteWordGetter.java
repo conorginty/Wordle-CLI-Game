@@ -29,7 +29,8 @@ public class RemoteWordGetter implements WordGetter {
         return word;
     }
 
-    public Word getFullRandomWord() throws IOException {
+    @Override
+    public Word getRandomFullWord() throws IOException {
         Word word = this.wordScraper.scrapeFullWord();
         return word;
     }

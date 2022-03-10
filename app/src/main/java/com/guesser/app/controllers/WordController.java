@@ -21,7 +21,7 @@ public class WordController {
 
     @GetMapping("/")
     public String wordPage(Model model) throws IOException {
-        Word randomWord = wordService.getRandomWord();
+        Word randomWord = wordService.getRandomFullWord();
         model.addAttribute("randomWord", randomWord);
         System.out.println(randomWord);
         return "word";

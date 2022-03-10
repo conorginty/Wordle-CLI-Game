@@ -4,5 +4,6 @@ public enum PartOfSpeech {
     NOUN,
     ADJECTIVE,
     VERB,
-    ADVERB
+    ADVERB,
+    UNKNOWN
 }

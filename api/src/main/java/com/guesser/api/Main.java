@@ -22,7 +22,7 @@ public class Main {
             System.out.println(randomWordAndDefinition);
 
             System.out.println("=== Get 'Full' Remote Random Word ===");
-            Word fullWord = remoteWordGetter.getFullRandomWord();
+            Word fullWord = remoteWordGetter.getRandomFullWord();
             System.out.println(fullWord);
         } catch (IOException e) {
             e.printStackTrace();
