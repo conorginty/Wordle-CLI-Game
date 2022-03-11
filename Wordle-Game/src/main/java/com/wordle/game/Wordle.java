@@ -3,11 +3,37 @@ package com.wordle.game;
 import com.guesser.api.getter.LocalWordGetter;
 import com.guesser.api.getter.WordGetter;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class Wordle {
     public void playGame() {
         System.out.println("You are playing Wordle!");
         String actualWord = getRandomFiveLetterWordInUpperCase();
         System.out.println(actualWord);
+
+        String guess = getUserGuess();
+        System.out.println("Your guess is: " + guess);
+    }
+
+    private String getUserGuess() {
+        String guess = null;
+
+        boolean successful = false;
+
+        while (!successful) {
+            Scanner reader = new Scanner(System.in);
+            try {
+                System.out.println("Enter a 5 letter word: ");
+                String input = reader.nextLine();
+                successful = validateGuess(input);
+                guess = input.toUpperCase();
+            } catch (InputMismatchException e) {
+                e.printStackTrace();
+            }
+            // TODO close the reader after getting valid guess
+        }
+        return guess;
     }
 
     public String getRandomFiveLetterWordInUpperCase() {
@@ -16,4 +42,23 @@ public class Wordle {
         return randomWord.toUpperCase();
     }
 
+    private boolean validateGuess(String guess) {
+        return isFiveLettersLong(guess) && onlyContainsLetters(guess);
+    }
+
+    private boolean isFiveLettersLong(String guess) {
+        if (guess.length() == 5) {
+            return true;
+        }
+        System.out.println("Word must be 5 letters long");
+        return false;
+    }
+
+    private boolean onlyContainsLetters(String guess) {
+        if (guess.matches("[a-zA-Z]+")) {
+            return true;
+        }
+        System.out.println("Word must only contain letters");
+        return false;
+    }
 }
