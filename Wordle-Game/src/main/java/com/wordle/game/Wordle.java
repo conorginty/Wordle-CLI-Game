@@ -14,6 +14,24 @@ public class Wordle {
 
         String guess = getUserGuess();
         System.out.println("Your guess is: " + guess);
+
+        String result = analyseGuess(guess, actualWord);
+        System.out.println(result);
+    }
+
+    private String analyseGuess(String guess, String actual) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < guess.length(); i++) {
+            char currentGuessChar = guess.charAt(i);
+            char matchingActualChar = actual.charAt(i);
+
+            boolean guessCharIsInActualWord = actual.indexOf(currentGuessChar) >= 0;
+            boolean guessCharIsInSamePositionAsActualWord = currentGuessChar == matchingActualChar;
+
+            LetterState letterState = new LetterState(currentGuessChar, guessCharIsInActualWord, guessCharIsInSamePositionAsActualWord);
+            sb.append(letterState.getState());
+        }
+        return sb.toString();
     }
 
     private String getUserGuess() {
