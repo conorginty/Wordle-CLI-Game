@@ -11,11 +11,12 @@ import java.util.Scanner;
 public class Wordle {
 
     private final int MAX_NUMBER_OF_GUESSES = 6;
+    private final int WORD_LENGTH = 5;
     private List<String> guessedWords = new ArrayList<>();
 
     public void playGame() {
         System.out.println("You are playing Wordle!");
-        String actualWord = getRandomFiveLetterWordInUpperCase();
+        String actualWord = getRandomWordOfSize_WORD_LENGTH_InUpperCase();
         System.out.println(actualWord);
         boolean correct = false;
 
@@ -74,7 +75,7 @@ public class Wordle {
         while (!successful) {
             Scanner reader = new Scanner(System.in);
             try {
-                System.out.println("Enter a 5 letter word: ");
+                System.out.println("Enter a " + WORD_LENGTH + " letter word: ");
                 String input = reader.nextLine();
                 successful = validateGuess(input);
                 guess = input.toUpperCase();
@@ -86,21 +87,21 @@ public class Wordle {
         return guess;
     }
 
-    public String getRandomFiveLetterWordInUpperCase() {
+    public String getRandomWordOfSize_WORD_LENGTH_InUpperCase() {
         WordGetter wordGetter = new LocalWordGetter();
-        String randomWord = wordGetter.getRandomWordOfLengthN(5).getWord();
+        String randomWord = wordGetter.getRandomWordOfLengthN(WORD_LENGTH).getWord();
         return randomWord.toUpperCase();
     }
 
     private boolean validateGuess(String guess) {
-        return isFiveLettersLong(guess) && onlyContainsLetters(guess);
+        return is_WORD_LENGTH_LettersLong(guess) && onlyContainsLetters(guess);
     }
 
-    private boolean isFiveLettersLong(String guess) {
-        if (guess.length() == 5) {
+    private boolean is_WORD_LENGTH_LettersLong(String guess) {
+        if (guess.length() == WORD_LENGTH) {
             return true;
         }
-        System.out.println("Word must be 5 letters long");
+        System.out.println("Word must be " + WORD_LENGTH + " letters long");
         return false;
     }
 
