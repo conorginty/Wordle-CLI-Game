@@ -29,16 +29,6 @@ public class Wordle {
             String guess = getUserGuess();
             System.out.println("Your guess is: " + guess);
 
-            if (!allWordsOfSize_WORD_LENGTH.contains(guess.toLowerCase())) {
-                System.out.println(guess + " is an invalid word. " + PLEASE_TRY_AGAIN);
-                continue;
-            }
-
-            if (guessedWords.contains(guess)) {
-                System.out.println("You have already tried the word: " + guess + ". " + PLEASE_TRY_AGAIN);
-                continue;
-            }
-
             String result = analyseGuess(guess, actualWord);
             System.out.println(result);
             if (guess.equals(actualWord)) {
@@ -109,14 +99,15 @@ public class Wordle {
     }
 
     private boolean validateGuess(String guess) {
-        return is_WORD_LENGTH_LettersLong(guess) && onlyContainsLetters(guess);
+        return is_WORD_LENGTH_LettersLong(guess) && onlyContainsLetters(guess)
+            && isInListOfValidWords(guess) && hasNotBeenGuessedPreviously(guess);
     }
 
     private boolean is_WORD_LENGTH_LettersLong(String guess) {
         if (guess.length() == WORD_LENGTH) {
             return true;
         }
-        System.out.println("Word must be " + WORD_LENGTH + " letters long");
+        System.out.println("Word must be " + WORD_LENGTH + " letters long. " + PLEASE_TRY_AGAIN);
         return false;
     }
 
@@ -124,7 +115,23 @@ public class Wordle {
         if (guess.matches("[a-zA-Z]+")) {
             return true;
         }
-        System.out.println("Word must only contain letters");
+        System.out.println("Word must only contain letters. " + PLEASE_TRY_AGAIN);
         return false;
+    }
+
+    private boolean isInListOfValidWords(String guess) {
+        if (allWordsOfSize_WORD_LENGTH.contains(guess.toLowerCase())) {
+            return true;
+        }
+        System.out.println(guess + " is not a valid word. " + PLEASE_TRY_AGAIN);
+        return false;
+    }
+
+    private boolean hasNotBeenGuessedPreviously(String guess) {
+        if (guessedWords.contains(guess)) {
+            System.out.println("You have already tried the word: " + guess + ". " + PLEASE_TRY_AGAIN);
+            return false;
+        }
+        return true;
     }
 }
