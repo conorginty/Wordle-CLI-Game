@@ -9,6 +9,7 @@ public class LetterState {
     private final char letter;
     private final boolean isInWord;
     private final boolean isInPosition;
+    private String state;
 
     public LetterState(char letter, boolean isInWord, boolean isInPosition) {
         this.letter = letter;
@@ -16,13 +17,22 @@ public class LetterState {
         this.isInPosition = isInPosition;
     }
 
-    public String getState() {
+    private void updateState() {
         if (isInWord && isInPosition) {
-            return ANSI_GREEN + letter + ANSI_RESET;
+            this.state = ANSI_GREEN + letter + ANSI_RESET;
         } else if (isInWord) {
-            return ANSI_YELLOW + letter + ANSI_RESET;
+            this.state = ANSI_YELLOW + letter + ANSI_RESET;
         } else {
-            return ANSI_GREY + letter + ANSI_RESET;
+            this.state = ANSI_GREY + letter + ANSI_RESET;
         }
+    }
+
+    public String getState() {
+        updateState();
+        return state;
+    }
+
+    public char getLetter() {
+        return letter;
     }
 }

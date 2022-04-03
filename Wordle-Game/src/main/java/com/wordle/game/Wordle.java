@@ -14,9 +14,16 @@ public class Wordle {
     private List<String> guessedWords = new ArrayList<>();
     WordGetter wordGetter = new LocalWordGetter();
     private static final List<String> allWordsOfSize_WORD_LENGTH = new ArrayList<>();
+    private static final Map<String, String> usedLettersMap = new HashMap<>();
 
     static {
         WordCollectionLoader.loadWithWordsOfLengthN(allWordsOfSize_WORD_LENGTH, WORD_LENGTH);
+
+        String uppercaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (char c: uppercaseAlphabet.toCharArray()) {
+            String charAsString = Character.toString(c);
+            usedLettersMap.put(charAsString, charAsString);
+        }
     }
 
     public void playGame() {
@@ -68,9 +75,27 @@ public class Wordle {
             boolean guessCharIsInSamePositionAsActualWord = currentGuessChar == matchingActualChar;
 
             LetterState letterState = new LetterState(currentGuessChar, guessCharIsInActualWord, guessCharIsInSamePositionAsActualWord);
+
             sb.append(letterState.getState());
+
+            updateUsedLetters(letterState);
         }
         return sb.toString();
+    }
+
+    private void updateUsedLetters(LetterState letterState) {
+        String letter = Character.toString(letterState.getLetter());
+        String state = letterState.getState();
+
+        updateLetters(letter, state);
+    }
+
+    private void updateLetters(String letter, String state) {
+        String ANSI_GREEN = "\u001B[32m";
+        boolean usedLetterIsNotGreen = !usedLettersMap.get(letter).contains(ANSI_GREEN);
+        if (usedLetterIsNotGreen) {
+            usedLettersMap.put(letter, state);
+        }
     }
 
     private String getUserGuess() {
@@ -81,6 +106,7 @@ public class Wordle {
         while (!successful) {
             Scanner reader = new Scanner(System.in);
             try {
+                System.out.println(usedLettersMap.values());
                 System.out.println("Enter a " + WORD_LENGTH + " letter word: ");
                 String input = reader.nextLine();
                 successful = validateGuess(input);
