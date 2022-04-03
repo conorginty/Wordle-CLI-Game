@@ -3,20 +3,52 @@ package com.wordle.game;
 import com.guesser.api.getter.LocalWordGetter;
 import com.guesser.api.getter.WordGetter;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Wordle {
+
+    private final int MAX_NUMBER_OF_GUESSES = 6;
+    private List<String> guessedWords = new ArrayList<>();
+
     public void playGame() {
         System.out.println("You are playing Wordle!");
         String actualWord = getRandomFiveLetterWordInUpperCase();
         System.out.println(actualWord);
+        boolean correct = false;
 
-        String guess = getUserGuess();
-        System.out.println("Your guess is: " + guess);
+        while (guessedWords.size() < MAX_NUMBER_OF_GUESSES) {
+            String guess = getUserGuess();
+            System.out.println("Your guess is: " + guess);
+            String result = analyseGuess(guess, actualWord);
+            System.out.println(result);
+            if (guess.equals(actualWord)) {
+                correct = true;
+                guessedWords.add(guess);
+                break;
+            } else {
+                System.out.println(guess + " is not the Wordle word");
+                guessedWords.add(guess);
+                System.out.println("Number of guesses made: " + guessedWords.size());
+                printGuesses();
+            }
+        }
 
-        String result = analyseGuess(guess, actualWord);
-        System.out.println(result);
+        if (correct) {
+            System.out.println("WELL DONE! You got it right - the Wordle word was: " + actualWord);
+            System.out.println("Total number of guesses: " + guessedWords.size());
+            printGuesses();
+        } else {
+            System.out.println("Unfortunately you have run out of guesses...");
+            System.out.println("The correct word was: " + actualWord);
+            System.out.println("Please try again next time!");
+        }
+    }
+
+    private void printGuesses() {
+        System.out.println("Your guesses: " + guessedWords.toString());
     }
 
     private String analyseGuess(String guess, String actual) {
