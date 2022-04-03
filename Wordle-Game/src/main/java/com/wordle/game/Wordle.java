@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Wordle {
 
+    public static final String PLEASE_TRY_AGAIN = "Please try again";
     private final int MAX_NUMBER_OF_GUESSES = 6;
     private static final int WORD_LENGTH = 5;
     private List<String> guessedWords = new ArrayList<>();
@@ -29,7 +30,12 @@ public class Wordle {
             System.out.println("Your guess is: " + guess);
 
             if (!allWordsOfSize_WORD_LENGTH.contains(guess.toLowerCase())) {
-                System.out.println(guess + " is an invalid word. Please try again.");
+                System.out.println(guess + " is an invalid word. " + PLEASE_TRY_AGAIN);
+                continue;
+            }
+
+            if (guessedWords.contains(guess)) {
+                System.out.println("You have already tried the word: " + guess + ". " + PLEASE_TRY_AGAIN);
                 continue;
             }
 
@@ -54,7 +60,7 @@ public class Wordle {
         } else {
             System.out.println("Unfortunately you have run out of guesses...");
             System.out.println("The correct word was: " + actualWord);
-            System.out.println("Please try again next time!");
+            System.out.println(PLEASE_TRY_AGAIN + " next time!");
         }
     }
 
