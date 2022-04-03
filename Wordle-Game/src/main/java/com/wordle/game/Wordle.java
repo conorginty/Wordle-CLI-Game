@@ -2,17 +2,21 @@ package com.wordle.game;
 
 import com.guesser.api.getter.LocalWordGetter;
 import com.guesser.api.getter.WordGetter;
+import com.wordle.utils.WordCollectionLoader;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Wordle {
 
     private final int MAX_NUMBER_OF_GUESSES = 6;
-    private final int WORD_LENGTH = 5;
+    private static final int WORD_LENGTH = 5;
     private List<String> guessedWords = new ArrayList<>();
+    WordGetter wordGetter = new LocalWordGetter();
+    private static final List<String> allWordsOfSize_WORD_LENGTH = new ArrayList<>();
+
+    static {
+        WordCollectionLoader.loadWithWordsOfLengthN(allWordsOfSize_WORD_LENGTH, WORD_LENGTH);
+    }
 
     public void playGame() {
         System.out.println("You are playing Wordle!");
@@ -23,6 +27,12 @@ public class Wordle {
         while (guessedWords.size() < MAX_NUMBER_OF_GUESSES) {
             String guess = getUserGuess();
             System.out.println("Your guess is: " + guess);
+
+            if (!allWordsOfSize_WORD_LENGTH.contains(guess.toLowerCase())) {
+                System.out.println(guess + " is an invalid word. Please try again.");
+                continue;
+            }
+
             String result = analyseGuess(guess, actualWord);
             System.out.println(result);
             if (guess.equals(actualWord)) {
@@ -88,7 +98,6 @@ public class Wordle {
     }
 
     public String getRandomWordOfSize_WORD_LENGTH_InUpperCase() {
-        WordGetter wordGetter = new LocalWordGetter();
         String randomWord = wordGetter.getRandomWordOfLengthN(WORD_LENGTH).getWord();
         return randomWord.toUpperCase();
     }

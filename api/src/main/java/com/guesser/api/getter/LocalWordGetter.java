@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class LocalWordGetter implements WordGetter {
 
     private static final String fileName = "all_english_words.txt";
-    private final List<String> allWords = getAllWords(fileName);
+    private final List<String> allWords = getAllWordsInFile(fileName);
 
     @Override
     public Word getRandomWord() throws IOException {
@@ -43,7 +43,7 @@ public class LocalWordGetter implements WordGetter {
             .collect(Collectors.toList());
     }
 
-    private List<String> getAllWords(String fileName) {
+    private List<String> getAllWordsInFile(String fileName) {
         InputStream is = convertFileToInputStream(fileName);
 
         return new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
@@ -63,5 +63,9 @@ public class LocalWordGetter implements WordGetter {
         } catch (Exception e) {
             return "ERROR_IN_GETTING_WORD";
         }
+    }
+
+    public List<String> getAllWords() {
+        return allWords;
     }
 }
