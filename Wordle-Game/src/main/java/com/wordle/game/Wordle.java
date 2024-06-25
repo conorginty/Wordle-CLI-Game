@@ -29,7 +29,7 @@ public class Wordle {
     public void playGame() {
         System.out.println("You are playing Wordle!");
         String actualWord = getRandomWordOfSize_WORD_LENGTH_InUpperCase();
-        System.out.println(actualWord);
+
         boolean correct = false;
 
         while (guessedWords.size() < MAX_NUMBER_OF_GUESSES) {
@@ -154,7 +154,7 @@ public class Wordle {
     }
 
     private boolean hasNotBeenGuessedPreviously(String guess) {
-        if (guessedWords.contains(guess)) {
+        if (guessedWords.contains(guess.toUpperCase())) {
             System.out.println("You have already tried the word: " + guess + ". " + PLEASE_TRY_AGAIN);
             return false;
         }

@@ -1,3 +1,5 @@
+package com.wordle;
+
 import com.wordle.game.Wordle;
 
 public class Main {
